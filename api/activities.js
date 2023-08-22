@@ -20,6 +20,25 @@ router.get('/:activityId/routines', async (req, res, next) => {
   }
 });
 
+// GET /api/activities/:activityId
+router.get('/:activityId', async (req, res, next) => {
+  try {
+      const { activityId } = req.params;
+      const activity = await getActivityById(activityId);  // Fetch activity by its ID
+      if (!activity) {
+          next({
+              name: 'NotFound',
+              message: `No activity found with ID ${activityId}`
+          });
+      } else {
+          res.send(activity);
+      }
+  } catch (error) {
+      next(error);
+  }
+});
+
+
 // GET /api/activities
 router.get('/', async (req, res, next) => {
   try {
